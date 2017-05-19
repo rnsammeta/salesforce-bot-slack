@@ -1,0 +1,66 @@
+{
+    "name": "salesforce-bot-slack",
+    "description": "Simple message broker to enable Slack to Salesforce communication using Slash Commands",
+    "env": {
+        "SF_CLIENT_ID": {
+            "description": "Consumer key of your Salesforce Connected App",
+            "value": "3MVG9OI03ecbG2VpTaC8qC9NGOUblnMuYGkjoSJCVc0uGmAHLoYlDAyvACKRdzbnqP9T0k1W6IOJWg8eczzv8"
+        },
+        "SF_CLIENT_SECRET": {
+            "description": "Consumer secret of your Salesforce Connected App",
+            "value": "8851574018492994740"
+        },
+        "SF_USER_NAME": {
+            "description": "Salesforce username for your integration user",
+            "value": "ramanaiah_sammeta@intuit.com.wfcdirect.dev"
+        },
+        "SF_PASSWORD": {
+            "description": "Salesforce password for your integration user",
+            "value": "Jagzram01kWZOmfAbJEJTB1eoZk1BEKln"
+        },
+        "SF_LOGIN_URL": {
+            "description": "Salesforce login URL",
+            "value": "https://test.salesforce.com"
+        },
+        "SLACK_BOT_TOKEN": {
+            "description": "Slack token for the account slash command",
+            "value": "xoxb-185110106320-29OMpRo2J7Pm4SQZx3fHxtwO"
+        },
+        "SLACK_ACCOUNT_TOKEN": {
+            "description": "Slack token for the account slash command",
+            "value": "",
+            "required": false
+        },
+        "SLACK_CONTACT_TOKEN": {
+            "description": "Slack token for the contact slash command",
+            "value": "",
+            "required": false
+        },
+        "SLACK_OPPORTUNITY_TOKEN": {
+            "description": "Slack token for the pipeline slash command",
+            "value": "",
+            "required": false
+
+        },
+        "SLACK_CASE_TOKEN": {
+            "description": "Slack token for the case slash command",
+            "value": "",
+            "required": false
+        },
+        "SLACK_WHOAMI_TOKEN": {
+            "description": "Slack token for the whoami slash command",
+            "value": "",
+            "required": false
+        },
+        "SLACK_REQS_TOKEN": {
+            "description": "Slack token for the reqs slash command",
+            "value": "",
+            "required": false
+        },
+        "SLACK_REQ_TOKEN": {
+            "description": "Slack token for the reqs slash command",
+            "value": "",
+            "required": false
+        }
+    }
+}

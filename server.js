@@ -2,7 +2,7 @@
 
 let http = require('http');
 
-const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
+const SLACK_BOT_TOKEN = 'xoxb-185110106320-29OMpRo2J7Pm4SQZx3fHxtwO';
 
 let Botkit = require('botkit'),
     formatter = require('./modules/slack-formatter'),
@@ -94,7 +94,10 @@ controller.hears(['create case', 'new case'], 'direct_message,direct_mention,men
 
         convo.ask('Enter a description for the case', (response, convo) => {
             description = response.text;
-            salesforce.createCase({subject: subject, description: description})
+            salesforce.createCase({
+                    subject: subject,
+                    description: description
+                })
                 .then(_case => {
                     bot.reply(message, {
                         text: "I created the case:",
@@ -156,7 +159,12 @@ controller.hears(['create contact', 'new contact'], 'direct_message,direct_menti
 
         convo.ask("What's the phone number?", (response, convo) => {
             phone = response.text;
-            salesforce.createContact({firstName: firstName, lastName: lastName, title: title, phone: phone})
+            salesforce.createContact({
+                    firstName: firstName,
+                    lastName: lastName,
+                    title: title,
+                    phone: phone
+                })
                 .then(contact => {
                     bot.reply(message, {
                         text: "I created the contact:",
@@ -178,7 +186,9 @@ controller.hears(['create contact', 'new contact'], 'direct_message,direct_menti
 });
 
 // To keep Heroku awake
-http.createServer(function(request, response) {
-    response.writeHead(200, {'Content-Type': 'text/plain'});
+http.createServer(function (request, response) {
+    response.writeHead(200, {
+        'Content-Type': 'text/plain'
+    });
     response.end('Ok, dyno is awake.');
-}).listen(process.env.PORT || 5000);
+}).listen(process.env.PORT || 3000);
