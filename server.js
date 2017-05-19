@@ -196,7 +196,7 @@ controller.hears(['search hm', 'hiring manager', 'hm'], 'direct_message,direct_m
                 .then(hiringManagers => {
                     bot.reply(message, {
                         text: "Here's the hiring manager name: ",
-                        attachments: formatter.formatContact(hiringManagers)
+                        attachments: formatter.formatHiringManager(hiringManagers)
                     });
                     convo.next();
                 })
