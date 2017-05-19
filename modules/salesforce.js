@@ -149,6 +149,45 @@ let createCase = newCase => {
 
 };
 
+let createReq = newReq => {
+
+    return new Promise((resolve, reject) => {
+        let c = nforce.createSObject('tobase__Requisition__c');
+        c.set('RecordType.Name', 'Hiring Req');
+        c.set('origin', 'Slack');
+        c.set('status', 'New');
+
+        org.insert({
+            sobject: c
+        }, err => {
+            if (err) {
+                console.error(err);
+                reject("An error occurred while creating a case");
+            } else {
+                resolve(c);
+            }
+        });
+    });
+
+};
+
+let getHiringManager = hmEmail => {
+
+    return new Promise((resolve, reject) => {
+        let q = "SELECT Id, Name, Email FROM Contact WHERE Email LIKE '%" + hmEmail + "%' LIMIT 1";
+        org.query({
+            query: q
+        }, (err, resp) => {
+            if (err) {
+                reject("An error as occurred");
+            } else {
+                resolve(resp.records);
+            }
+        });
+    });
+
+};
+
 login();
 
 exports.org = org;
@@ -158,3 +197,5 @@ exports.findOpportunity = findOpportunity;
 exports.getTopOpportunities = getTopOpportunities;
 exports.createContact = createContact;
 exports.createCase = createCase;
+exports.createReq = createReq;
+exports.getHiringManager = getHiringManager;

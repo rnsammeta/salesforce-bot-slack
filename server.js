@@ -185,6 +185,34 @@ controller.hears(['create contact', 'new contact'], 'direct_message,direct_menti
 
 });
 
+
+controller.hears(['search hm', 'hiring manager', 'hm'], 'direct_message,direct_mention,mention', (bot, message) => {
+    let hmEmail;
+    let askHMEmail = (response, convo) => {
+
+        convo.ask("What's the hiring manager email?", (response, convo) => {
+            hmEmail = response.text;
+            salesforce.getHiringManager(hmEmail)
+                .then(hmName => {
+                    bot.reply(message, {
+                        text: "Here's the hiring manager name: ",
+                        attachments: hmName
+                    });
+                    convo.next();
+                })
+                .catch(error => {
+                    bot.reply(message, error);
+                    convo.next();
+                });
+        });
+
+    };
+
+    bot.reply(message, "OK, I can help you with that!");
+    bot.startConversation(message, askHMEmail);
+});
+
+
 // To keep Heroku awake
 http.createServer(function (request, response) {
     response.writeHead(200, {
