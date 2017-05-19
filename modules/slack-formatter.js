@@ -190,8 +190,39 @@ let formatCase = _case => {
 
 };
 
+let formatHiringManager = hiringManagers => {
+
+    if (hiringManagers && hiringManagers.length > 0) {
+        let attachments = [];
+        hiringManagers.forEach(hiringManager => {
+            let fields = [];
+            fields.push({
+                title: "Name",
+                value: hiringManager.get("Name"),
+                short: true
+            });
+            fields.push({
+                title: "Email",
+                value: hiringManager.get("Email"),
+                short: true
+            });
+            attachments.push({
+                color: color,
+                fields: fields
+            });
+        });
+        return attachments;
+    } else {
+        return [{
+            text: "No records"
+        }];
+    }
+
+};
+
 exports.formatAccounts = formatAccounts;
 exports.formatContacts = formatContacts;
 exports.formatContact = formatContact;
 exports.formatOpportunities = formatOpportunities;
 exports.formatCase = formatCase;
+exports.formatHiringManager = formatHiringManager;

@@ -193,10 +193,10 @@ controller.hears(['search hm', 'hiring manager', 'hm'], 'direct_message,direct_m
         convo.ask("What's the hiring manager email?", (response, convo) => {
             hmEmail = response.text;
             salesforce.getHiringManager(hmEmail)
-                .then(hmName => {
+                .then(hiringManagers => {
                     bot.reply(message, {
                         text: "Here's the hiring manager name: ",
-                        attachments: hmName
+                        attachments: formatter.formatContact(hiringManagers)
                     });
                     convo.next();
                 })
@@ -208,7 +208,6 @@ controller.hears(['search hm', 'hiring manager', 'hm'], 'direct_message,direct_m
 
     };
 
-    bot.reply(message, "OK, I can help you with that!");
     bot.startConversation(message, askHMEmail);
 });
 
