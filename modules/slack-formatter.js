@@ -220,7 +220,6 @@ let formatHiringManager = hiringManagers => {
 };
 
 let formatRequisition = req => {
-
     let fields = [];
     fields.push({
         title: "Status",
@@ -235,6 +234,11 @@ let formatRequisition = req => {
     fields.push({
         title: "Hiring Manager",
         value: req._fields.hiring_manager__c,
+        short: true
+    });
+    fields.push({
+        title: "Hiring Manager Email",
+        value: req.get("hiring_manager_email__c"),
         short: true
     });
     fields.push({

@@ -184,11 +184,11 @@ let createReq = req => {
                 let hiringManagers = resp.records;
                 if (hiringManagers && hiringManagers.length > 0) {
                     let hiringManager = hiringManagers[0];
+                    c.set('Hiring_Manager__c', hiringManager.get("name"));
+                    c.set('Hiring_Manager_Email__c', hiringManager.get("email"));
                 }
-                c.set('Hiring_Manager_Email__c', hiringManager.get("Email"));
             }
         });
-        c.set('Hiring_Manager__c', req.hmName);
 
         c.set('Number_of_Openings__c', 1);
         c.set('New_Headcount_or_Replacement__c', 'New Headcount');
