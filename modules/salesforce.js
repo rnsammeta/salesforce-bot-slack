@@ -172,8 +172,24 @@ let createReq = req => {
     return new Promise((resolve, reject) => {
         let c = nforce.createSObject('Requisition__c');
         c.set('Requisition_Status__c', 'Awaiting Hiring Plan Meeting');
+
+        // Get hiring manager details
+        let q = "SELECT Id, Name, Email FROM Contact WHERE Name LIKE '%" + req.hmName + "%' LIMIT 1";
+        org.query({
+            query: q
+        }, (err, resp) => {
+            if (err) {
+
+            } else {
+                let hiringManagers = resp.records;
+                if (hiringManagers && hiringManagers.length > 0) {
+                    let hiringManager = hiringManagers[0];
+                }
+                c.set('Hiring_Manager_Email__c', hiringManager.get("Email"));
+            }
+        });
         c.set('Hiring_Manager__c', req.hmName);
-        //c.set('Hiring_Manager_Email__c', newReq.hmName);
+
         c.set('Number_of_Openings__c', 1);
         c.set('New_Headcount_or_Replacement__c', 'New Headcount');
         c.set('Job_Title_or_Job_Code__c', req.title);
