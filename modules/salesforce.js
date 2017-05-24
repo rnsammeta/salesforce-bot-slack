@@ -192,7 +192,23 @@ let createReq = req => {
 
         c.set('Number_of_Openings__c', 1);
         c.set('New_Headcount_or_Replacement__c', 'New Headcount');
-        c.set('Job_Title_or_Job_Code__c', req.title);
+
+        // Get job details
+        let q2 = "SELECT Id, Title__c FROM Job_Template__c WHERE Title__c LIKE '%" + req.title + "%' LIMIT 1";
+        org.query({
+            query: q2
+        }, (err, resp) => {
+            if (err) {
+
+            } else {
+                let jobTemplates = resp.records;
+                if (jobTemplates && jobTemplates.length > 0) {
+                    let jobTemplate = jobTemplates[0];
+                    c.set('Job_Title_or_Job_Code__c', jobTemplate.get("Title__c"));
+                }
+            }
+        });
+
         c.set('Employee_Type__c', 'Employee');
         c.set('Schedule__c', 'Full-Time');
         c.set('Justification__c', req.justification);
