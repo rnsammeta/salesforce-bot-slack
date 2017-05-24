@@ -188,14 +188,15 @@ controller.hears(['create contact', 'new contact'], 'direct_message,direct_menti
 
 controller.hears(['search hm', 'hiring manager', 'hm'], 'direct_message,direct_mention,mention', (bot, message) => {
     let hmEmail;
+
     let askHMEmail = (response, convo) => {
 
-        convo.ask("What's the hiring manager email?", (response, convo) => {
+        convo.ask("What's the hiring manager name?", (response, convo) => {
             hmEmail = response.text;
             salesforce.getHiringManager(hmEmail)
                 .then(hiringManagers => {
                     bot.reply(message, {
-                        text: "Here's the hiring manager name: ",
+                        text: "Here's the hiring manager details: ",
                         attachments: formatter.formatHiringManager(hiringManagers)
                     });
                     convo.next();
@@ -209,6 +210,72 @@ controller.hears(['search hm', 'hiring manager', 'hm'], 'direct_message,direct_m
     };
 
     bot.startConversation(message, askHMEmail);
+});
+
+
+controller.hears(['create req', 'new req', 'req'], 'direct_message,direct_mention,mention', (bot, message) => {
+
+    let hmName,
+        title,
+        location,
+        justification;
+
+    let askHmName = (response, convo) => {
+
+        convo.ask("What's the hiring manager name?", (response, convo) => {
+            hmName = response.text;
+            askTitle(response, convo);
+            convo.next();
+        });
+
+    };
+
+    let askTitle = (response, convo) => {
+
+        convo.ask("What's the Title?", (response, convo) => {
+            title = response.text;
+            askLocation(response, convo);
+            convo.next();
+        });
+
+    };
+
+    let askLocation = (response, convo) => {
+
+        convo.ask("What's the primary location?", (response, convo) => {
+            location = response.text;
+            askJustification(response, convo);
+            convo.next();
+        });
+
+    };
+
+    let askJustification = (response, convo) => {
+
+        convo.ask("Please provide justification?", (response, convo) => {
+            justification = response.text;
+            salesforce.createReq({
+                    hmName: hmName,
+                    title: title,
+                    location: location,
+                    justification: justification
+                })
+                .then(req => {
+                    bot.reply(message, {
+                        text: "I created an awesome req: ",
+                        attachments: formatter.formatRequisition(req)
+                    });
+                    convo.next();
+                })
+                .catch(error => {
+                    bot.reply(message, error);
+                    convo.next();
+                });
+        });
+
+    };
+
+    bot.startConversation(message, askHmName);
 });
 
 

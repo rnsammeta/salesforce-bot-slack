@@ -149,32 +149,11 @@ let createCase = newCase => {
 
 };
 
-let createReq = newReq => {
-
-    return new Promise((resolve, reject) => {
-        let c = nforce.createSObject('tobase__Requisition__c');
-        c.set('RecordType.Name', 'Hiring Req');
-        c.set('origin', 'Slack');
-        c.set('status', 'New');
-
-        org.insert({
-            sobject: c
-        }, err => {
-            if (err) {
-                console.error(err);
-                reject("An error occurred while creating a case");
-            } else {
-                resolve(c);
-            }
-        });
-    });
-
-};
-
 let getHiringManager = hmEmail => {
 
     return new Promise((resolve, reject) => {
-        let q = "SELECT Id, Name, Email FROM Contact WHERE Email LIKE '%" + hmEmail + "%' LIMIT 1";
+        let q = "SELECT Id, Name, Email FROM Contact WHERE Name LIKE '%" + hmEmail + "%' LIMIT 1";
+
         org.query({
             query: q
         }, (err, resp) => {
@@ -182,6 +161,36 @@ let getHiringManager = hmEmail => {
                 reject("An error as occurred");
             } else {
                 resolve(resp.records);
+            }
+        });
+    });
+
+};
+
+let createReq = req => {
+
+    return new Promise((resolve, reject) => {
+        let c = nforce.createSObject('Requisition__c');
+        c.set('Requisition_Status__c', 'Awaiting Hiring Plan Meeting');
+        c.set('Hiring_Manager__c', req.hmName);
+        //c.set('Hiring_Manager_Email__c', newReq.hmName);
+        c.set('Number_of_Openings__c', 1);
+        c.set('New_Headcount_or_Replacement__c', 'New Headcount');
+        c.set('Job_Title_or_Job_Code__c', req.title);
+        c.set('Employee_Type__c', 'Employee');
+        c.set('Schedule__c', 'Full-Time');
+        c.set('Justification__c', req.justification);
+        c.set('Primary_Location__c', req.location);
+
+
+        org.insert({
+            sobject: c
+        }, err => {
+            if (err) {
+                console.error(err);
+                reject("An error occurred while creating awesome req");
+            } else {
+                resolve(c);
             }
         });
     });
@@ -197,5 +206,5 @@ exports.findOpportunity = findOpportunity;
 exports.getTopOpportunities = getTopOpportunities;
 exports.createContact = createContact;
 exports.createCase = createCase;
-exports.createReq = createReq;
 exports.getHiringManager = getHiringManager;
+exports.createReq = createReq;
